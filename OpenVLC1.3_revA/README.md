@@ -16,7 +16,13 @@
 
   1. With the power disconnected, insert the SD Card into the BBB and power it up with the USB cable. 
   2. Connect through SSH to the IP 192.168.7.2.
-  3. Now we’re running the OS on the SD Card, let’s flash it into the BBB. Move to /opt/scripts/tools/eMMC and run sudo ./bbb-eMMC-       flasher-eewiki-ext4.sh.
+        
+            ssh debian@192.168.7.2
+  3. Now we’re running the OS on the SD Card, let’s flash it into the BBB. Move to /opt/scripts/tools/eMMC and run sudo ./bbb-eMMC-flasher-eewiki-ext4.sh.
+        
+            cd /opt/scripts/tools/eMMC
+            sudo ./bbb-eMMC-flasher-eewiki-ext4.sh
+              
   4. Wait until it says “eMMC has been flashed”. Once it finishes, disconnect the usb cable and with the BBB switched off, remove the SD Card.
 
 ## Setting up the OS
@@ -59,17 +65,43 @@
   
   There are two parts in the TX/RX, the kernel driver and the PRU code. 
   
-  1. To load the kernel driver, inside OpenVLC1.3 folder run:
-  
-    sudo ./load_test.sh
-  
-  In that script you can change the IP the interface takes. That’s the IP in the VLC network, so TX and RX must have different IPs (for   example TX: 192.168.0.1 and RX 192.168.0.2).
-  
-  2. Once the module driver is installed, go to PRU folder. Enter TX/RX and run deploy.sh code:
-  
-    sudo ./deploy.sh
-  
-  This will boot up the PRUs with the code necessary to transmit and received VLC frames.
+1. To load the kernel driver, inside OpenVLC1.3 folder run:
+    
+    1. Load TX kernel **!!This action must be done only in TX device!!** 
+    
+            cd cd OpenVLC1.3_revA/kernel/
+            sudo chmod +x ./load_test.sh
+            sudo ./load_test.sh 192.168.0.1 255.255.255.0
+        
+    2. Load RX kernel **!!This action must be done only in RX device!!** 
+    
+            cd cd OpenVLC1.3_revA/kernel/
+            sudo chmod +x ./load_test.sh
+            sudo ./load_test.sh 192.168.0.2 255.255.255.0
+    
+    You can change the IP and the netmask the interface takes. That’s the IP in the VLC network, but keep in mind they
+    must have different ip address
+    
+
+2. Once the module driver is installed, go to PRU folder. Enter TX/RX and run deploy.sh code:
+    
+    1. Deploy TX **!!This action must be done only in TX device!!** 
+
+            cd ../PRU/TX/
+            sudo chmod +x ./deploy.sh
+            sudo ./deploy.sh
+        
+        This will boot up the PRUs with the code necessary to transmit VLC frames.
+        
+    2. Deploy RX **!!This action must be done only in TX device!!** 
+            
+        cd ../PRU/RX/
+        sudo chmod +x ./deploy.sh
+        sudo ./deploy.sh
+
+    This will boot up the PRUs with the code necessary to receive VLC frames.
+    
+    **!! TX and RX cannot be enabled at the same time !!**
 
 ## Working with the TX/RX
 

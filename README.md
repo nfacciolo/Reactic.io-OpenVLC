@@ -1,5 +1,8 @@
-# OpenVLC 
-
+# Reactic OpenVLC  
+This repository was duplicated from https://github.com/openvlc/OpenVLC
+If updates are push in the original repository follow the instructions in the given link in order to merge them :
+https://help.github.com/en/articles/duplicating-a-repository#mirroring-a-repository-in-another-location
+#OpenVLC Origin  
 This is the repository for the OpenVLC platform, an open-source, flexible and low-cost Visible Light Communication System platform. Research and development are conducted at IMDEA Networks Institute.
 
 ## New OpenVLC1.3 version
