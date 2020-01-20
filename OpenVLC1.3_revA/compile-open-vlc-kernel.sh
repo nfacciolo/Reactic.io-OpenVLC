@@ -1,6 +1,6 @@
 #!/bin/bash
 
-printf "\nExecuting load_test.sh"
+printf "\nExecuting compile-open-vlc-kernel.sh"
 
 readonly VLC0_IP_ADDRESS="$1"
 readonly VLC0_NETMASK="$2"
@@ -16,17 +16,8 @@ if [[ ! ($VLC0_NETMASK =~ ^(((255\.){3}(255|254|252|248|240|224|192|128|0+))|((2
     printf "Second argument must be a netmask\n"
     exit
 fi
-rmmod vlc
-#watch -n 0.1 "dmesg | tail -n $((LINES-6))"
 
-find -exec touch \{\} \;
-
-make clean
-
-make
-
-# Insert the driver
-insmod vlc.ko
-
-# Configure the IP address of the new interface
-ifconfig vlc0 "$1" netmask "$2"
+echo "Creating Open VLC 1.3 kernel"
+cd ./kernel || exit
+chmod +x ./load_test.sh || exit
+./load_test.sh "$VLC0_IP_ADDRESS" "$VLC0_NETMASK" || exit
