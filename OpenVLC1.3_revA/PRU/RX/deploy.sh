@@ -1,5 +1,7 @@
 #! /bin/bash
 
+printf "\nExecuting RX/deploy.sh"
+
 echo "-Placing the firmware"
 	if [[ "$(echo $(uname -r))" == "4.14"* ]]
 	then
